@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}Meus Alunos{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for client in clients %}
+        <li><a href="">{{ client }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

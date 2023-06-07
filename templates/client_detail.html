@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+
+{% block title %}Cliente{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>NOME_ALUNO</th>
+            <th>Pacote</th>
+            <th>Plano</th>
+            <th>Vencimento</th>
+            <th>Pagamento</th>
+            <th>Valor Total</th>
+        </tr>
+        <tr>
+            <td>#PERSONAL</td>
+            <td>#Satisfação - 2x/semana</td>
+            <td>#Anual Família *</td>
+            <td>#05/03/2023</td>
+            <td>Em aberto</td>
+            <td>#R$560,00</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>MÊS</th>
+            <th>Aproveitamento Semanal</th>
+            <th>Aula 1</th>
+            <th>Aula 2</th>
+            <th>Aula 3</th>
+            <th>Aula 4</th>
+            <th>Timeline - Start</th>
+            <th>Timeline - End</th>
+            <th>Aproveitamento Total</th>
+        </tr>
+        <tr>
+            <td>Semana 1</td>
+            <td>CALCULAR 100%</td>
+            <td>AULA_STATUS 1</td>
+            <td>AULA_STATUS 2</td>
+            <td>AULA_STATUS 3</td>
+            <td>AULA_STATUS 4</td>
+            <td>Timeline - Start</td>
+            <td>Timeline - Start + 6</td>
+        </tr>
+        <tr>
+            <td>Semana 2</td>
+            <td>CALCULAR 1/2</td>
+            <td>AULA_STATUS 1</td>
+            <td>AULA_STATUS 2</td>
+            <td>AULA_STATUS 3</td>
+            <td>AULA_STATUS 4</td>
+            <td>Timeline - Start + 7</td>
+            <td>Timeline - Start + 13</td>
+        </tr>
+        <tr>
+            <td>Semana 3</td>
+            <td>CALCULAR 1/2</td>
+            <td>AULA_STATUS 1</td>
+            <td>AULA_STATUS 2</td>
+            <td>AULA_STATUS 3</td>
+            <td>AULA_STATUS 4</td>
+            <td>Timeline - Start + 14</td>
+            <td>Timeline - Start + 20</td>
+        </tr>
+        <tr>
+            <td>Semana 4</td>
+            <td>CALCULAR Não</td>
+            <td>AULA_STATUS 1</td>
+            <td>AULA_STATUS 2</td>
+            <td>AULA_STATUS 3</td>
+            <td>AULA_STATUS 4</td>
+            <td>Timeline - Start + 21</td>
+            <td>Timeline - Start + 27</td>
+        </tr>
+        <tr>
+            <td>OBSERVAÇÕES</td>
+        </tr>
+    </table>
+
+    <p>Formulário:</p>
+    <form method='POST'> {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save" />
+    </form>
+{% endblock %}

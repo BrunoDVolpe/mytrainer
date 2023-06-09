@@ -24,8 +24,8 @@ def clientDetail(request, id=id, *args, **kwargs):
     
     # Pagination
     paginator = Paginator(objs, 1)
-    page_number = request.GET.get("train")
-    page_obj = paginator.get_page(page_number)    
+    page_number = request.GET.get("train", objs.count())
+    page_obj = paginator.get_page(page_number)
 
     #form = TrainingInstanceForm(request.POST or None, instance=obj)
     context = {

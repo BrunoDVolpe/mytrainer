@@ -3,85 +3,129 @@
 {% block title %}Cliente{% endblock %}
 
 {% block content %}
+    {% for obj in page_obj %}
     <table>
         <tr>
-            <th>NOME_ALUNO</th>
+            <th>{{ queryset.name }}</th>
             <th>Pacote</th>
-            <th>Plano</th>
             <th>Vencimento</th>
             <th>Pagamento</th>
             <th>Valor Total</th>
         </tr>
         <tr>
-            <td>#PERSONAL</td>
-            <td>#Satisfação - 2x/semana</td>
-            <td>#Anual Família *</td>
-            <td>#05/03/2023</td>
-            <td>Em aberto</td>
-            <td>#R$560,00</td>
+            <td>{{ queryset.plan_id.service }}</td>
+            <td>{{ queryset.plan_id.package }}</td>
+            <td>{{ queryset.payment_date|stringformat:"02d" }}/{{ obj.begins_at.initial|date:"m/Y" }}</td>
+            <td>{% if obj.payment_status %}Pago!{% else %}Em aberto{%endif%}</td>
+            <td>R$ {{ queryset.plan_id.price }}</td>
         </tr>
     </table>
 
+    <hr>
+    
     <table>
         <tr>
-            <th>MÊS</th>
+            <th>{{ obj.begins_at.get_month }}</th>
             <th>Aproveitamento Semanal</th>
             <th>Aula 1</th>
             <th>Aula 2</th>
+            {% if queryset.plan_id.package.month_frequency >= 12 %}
             <th>Aula 3</th>
+            {% endif %}
+            {% if queryset.plan_id.package.month_frequency >= 16 %}
             <th>Aula 4</th>
+            {% endif %}
             <th>Timeline - Start</th>
             <th>Timeline - End</th>
             <th>Aproveitamento Total</th>
         </tr>
         <tr>
             <td>Semana 1</td>
-            <td>CALCULAR 100%</td>
-            <td>AULA_STATUS 1</td>
-            <td>AULA_STATUS 2</td>
-            <td>AULA_STATUS 3</td>
-            <td>AULA_STATUS 4</td>
-            <td>Timeline - Start</td>
-            <td>Timeline - Start + 6</td>
+            <td>{{ obj.get_week_efficiency.week_1 }}</td>
+            <td>{{ obj.class1_status }}</td>
+            <td>{{ obj.class2_status }}</td>
+            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            <th>{{ obj.class3_status }}</th>
+            {% endif %}
+            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            <th>{{ obj.class4_status }}</th>
+            {% endif %}
+            <td>{{ obj.begins_at.get_weeks.week_1_start }}</td>
+            <td>{{ obj.begins_at.get_weeks.week_1_end }}</td>
+            <td>{{ obj.get_month_efficiency }}</td>
         </tr>
         <tr>
             <td>Semana 2</td>
-            <td>CALCULAR 1/2</td>
-            <td>AULA_STATUS 1</td>
-            <td>AULA_STATUS 2</td>
-            <td>AULA_STATUS 3</td>
-            <td>AULA_STATUS 4</td>
-            <td>Timeline - Start + 7</td>
-            <td>Timeline - Start + 13</td>
+            <td>{{ obj.get_week_efficiency.week_2 }}</td>
+            <td>{{ obj.class5_status }}</td>
+            <td>{{ obj.class6_status }}</td>
+            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            <th>{{ obj.class7_status }}</th>
+            {% endif %}
+            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            <th>{{ obj.class8_status }}</th>
+            {% endif %}
+            <td>{{ obj.begins_at.get_weeks.week_2_start }}</td>
+            <td>{{ obj.begins_at.get_weeks.week_2_end }}</td>
         </tr>
         <tr>
             <td>Semana 3</td>
-            <td>CALCULAR 1/2</td>
-            <td>AULA_STATUS 1</td>
-            <td>AULA_STATUS 2</td>
-            <td>AULA_STATUS 3</td>
-            <td>AULA_STATUS 4</td>
-            <td>Timeline - Start + 14</td>
-            <td>Timeline - Start + 20</td>
+            <td>{{ obj.get_week_efficiency.week_3 }}</td>
+            <td>{{ obj.class9_status }}</td>
+            <td>{{ obj.class10_status }}</td>
+            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            <th>{{ obj.class11_status }}</th>
+            {% endif %}
+            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            <th>{{ obj.class12_status }}</th>
+            {% endif %}
+            <td>{{ obj.begins_at.get_weeks.week_3_start }}</td>
+            <td>{{ obj.begins_at.get_weeks.week_3_end }}</td>
         </tr>
         <tr>
             <td>Semana 4</td>
-            <td>CALCULAR Não</td>
-            <td>AULA_STATUS 1</td>
-            <td>AULA_STATUS 2</td>
-            <td>AULA_STATUS 3</td>
-            <td>AULA_STATUS 4</td>
-            <td>Timeline - Start + 21</td>
-            <td>Timeline - Start + 27</td>
-        </tr>
-        <tr>
-            <td>OBSERVAÇÕES</td>
+            <td>{{ obj.get_week_efficiency.week_4 }}</td>
+            <td>{{ obj.class13_status }}</td>
+            <td>{{ obj.class14_status }}</td>
+            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            <th>{{ obj.class15_status }}</th>
+            {% endif %}
+            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            <th>{{ obj.class16_status }}</th>
+            {% endif %}
+            <td>{{ obj.begins_at.get_weeks.week_4_start }}</td>
+            <td>{{ obj.begins_at.get_weeks.week_4_end }}</td>
         </tr>
     </table>
+    <hr>
+    <div class="height-train-observations">
+        <p class="text-left"><b>OBSERVAÇÕES</b></p>
+        <p class="text-left">{{ obj.observations }}</p>
+    </div>
+    {% endfor %}
 
-    <p>Formulário:</p>
-    <form method='POST'> {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save" />
-    </form>
+    <!-- Pagination -->
+    <div class="btn-toolbar pagination" role="toolbar" aria-label="Toolbar with button groups">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <div class="btn-group" role="group" aria-label="First group">
+                <a href="?train=1" class="btn btn-secondary" role="button">&laquo; first</a>
+                <a href="?train={{ page_obj.previous_page_number }}" class="btn btn-secondary" role="button">previous</a>
+            </div>
+            {% endif %}
+
+            <div class="btn-group" role="group" aria-label="Second group">
+                <span class="current">
+                    <a href="" class="btn btn-secondary disabled" role="button">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+                </span>
+            </div>
+            
+            {% if page_obj.has_next %}
+            <div class="btn-group" role="group" aria-label="Third group">
+                <a href="?train={{ page_obj.next_page_number }}" class="btn btn-secondary" role="button">next</a>
+                <a href="?train={{ page_obj.paginator.num_pages }}" class="btn btn-secondary" role="button">last &raquo;</a>
+            </div>
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}

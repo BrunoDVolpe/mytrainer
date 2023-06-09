@@ -3,9 +3,14 @@
 {% block title %}Meus Alunos{% endblock %}
 
 {% block content %}
-    <ul>
-    {% for client in clients %}
-        <li><a href="">{{ client }}</a></li>
-    {% endfor %}
-    </ul>
+    <table>
+        <tr>
+            <th>Clientes</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+            <td><a href="{{ client.get_absolute_url }}">{{ client.id }} | {{ client.name }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

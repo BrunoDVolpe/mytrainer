@@ -67,7 +67,7 @@ td, th {
     border-width: 1px 0px;
     border-style: solid;
     border-color: #dee2e6;
-    text-align: left;
+    text-align: center;
     padding: 8px;
     vertical-align: middle;
 }
@@ -101,6 +101,15 @@ h2 {
     padding: 25px 15px 15px;
 }
 
+footer {
+    padding: 20px 0 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
 .dots {
     width: 45px;
 }
@@ -116,4 +125,14 @@ h2 {
 small {
     display: inline-block;
     width: 210px;
+}
+
+.pagination,
+.first-row {
+    padding-top: 20px;
+}
+
+.height-train-observations {
+    height: 100px;
+    max-height: 100px;
 }

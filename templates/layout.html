@@ -26,25 +26,39 @@
 
     <body>
         {% include 'navbar.html' %}
-
-    {% comment %}
-        {% if get_flashed_messages() %}
-            <header>
-                <div class="alert alert-primary border text-center" role="alert">
-                    {{ get_flashed_messages() | join(" ") }}
+        <div class="container-fluid">
+            <div class="row first-row">
+                <div class="col-sm-2">
+                    {% block sidebar %}
+                        <ul class="sidebar-nav">
+                            <li><a href="{% url 'clients-list' %}">Lista de Clientes</a></li>
+                            <li><a href="">Home</a></li>
+                            <li><a href="">All books</a></li>
+                            <li><a href="">All authors</a></li>
+                        </ul>
+                    {% endblock %}
                 </div>
-            </header>
-        {% endif %}
-    {% endcomment %}
+                <div class="col-sm-10 ">
+                    {% comment %}
+                        {% if get_flashed_messages() %}
+                            <header>
+                                <div class="alert alert-primary border text-center" role="alert">
+                                    {{ get_flashed_messages() | join(" ") }}
+                                </div>
+                            </header>
+                        {% endif %}
+                    {% endcomment %}
 
-        <main class="container p-5">
-            {% block content %}{% endblock %}
-        </main>
-
-        <footer class="small text-center text-muted">
-            Healing movements. Body in movement with myTrainer. View our <a href="/">Terms of Use</a>.
-        </footer>
-
+                    <main>
+                        {% block content %}{% endblock %}
+                    </main>
+                    
+                    {% block pagination %}{% endblock %}
+                </div>
+            </div>
+            <footer class="small text-center text-muted">
+                Healing movements. Body in movement with myTrainer. View our <a href="/">Terms of Use</a>.
+            </footer>
+        </div>
     </body>
-
 </html>

@@ -44,13 +44,14 @@ class ServicePlan(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.title
-    
+
+
 class ClientProfile(models.Model):
     """Model representing the personal clients."""
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
     name = models.CharField(max_length=100)
-    plan_id = models.ForeignKey(UsersPlan, on_delete=models.SET_NULL, blank=True, null=True)
-    trainer_id = models.ForeignKey("TrainerProfile", on_delete=models.SET_NULL, blank=True, null=True)
+    plan = models.ForeignKey(UsersPlan, on_delete=models.SET_NULL, blank=True, null=True)
+    personal_trainer = models.ForeignKey("TrainerProfile", on_delete=models.SET_NULL, blank=True, null=True)
     
     PAYMENT_DAY_OPTIONS = [
         (5, 'Dia 5'),

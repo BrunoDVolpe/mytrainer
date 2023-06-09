@@ -13,11 +13,11 @@
             <th>Valor Total</th>
         </tr>
         <tr>
-            <td>{{ queryset.plan_id.service }}</td>
-            <td>{{ queryset.plan_id.package }}</td>
+            <td>{{ queryset.plan.service }}</td>
+            <td>{{ queryset.plan.package }}</td>
             <td>{{ queryset.payment_date|stringformat:"02d" }}/{{ obj.begins_at.initial|date:"m/Y" }}</td>
             <td>{% if obj.payment_status %}Pago!{% else %}Em aberto{%endif%}</td>
-            <td>R$ {{ queryset.plan_id.price }}</td>
+            <td>R$ {{ queryset.plan.price }}</td>
         </tr>
     </table>
 
@@ -29,10 +29,10 @@
             <th>Aproveitamento Semanal</th>
             <th>Aula 1</th>
             <th>Aula 2</th>
-            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            {% if queryset.plan.package.month_frequency >= 12 %}
             <th>Aula 3</th>
             {% endif %}
-            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            {% if queryset.plan.package.month_frequency >= 16 %}
             <th>Aula 4</th>
             {% endif %}
             <th>Timeline - Start</th>
@@ -44,10 +44,10 @@
             <td>{{ obj.get_week_efficiency.week_1 }}</td>
             <td>{{ obj.class1_status }}</td>
             <td>{{ obj.class2_status }}</td>
-            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            {% if queryset.plan.package.month_frequency >= 12 %}
             <th>{{ obj.class3_status }}</th>
             {% endif %}
-            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            {% if queryset.plan.package.month_frequency >= 16 %}
             <th>{{ obj.class4_status }}</th>
             {% endif %}
             <td>{{ obj.begins_at.get_weeks.week_1_start }}</td>
@@ -59,10 +59,10 @@
             <td>{{ obj.get_week_efficiency.week_2 }}</td>
             <td>{{ obj.class5_status }}</td>
             <td>{{ obj.class6_status }}</td>
-            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            {% if queryset.plan.package.month_frequency >= 12 %}
             <th>{{ obj.class7_status }}</th>
             {% endif %}
-            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            {% if queryset.plan.package.month_frequency >= 16 %}
             <th>{{ obj.class8_status }}</th>
             {% endif %}
             <td>{{ obj.begins_at.get_weeks.week_2_start }}</td>
@@ -73,10 +73,10 @@
             <td>{{ obj.get_week_efficiency.week_3 }}</td>
             <td>{{ obj.class9_status }}</td>
             <td>{{ obj.class10_status }}</td>
-            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            {% if queryset.plan.package.month_frequency >= 12 %}
             <th>{{ obj.class11_status }}</th>
             {% endif %}
-            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            {% if queryset.plan.package.month_frequency >= 16 %}
             <th>{{ obj.class12_status }}</th>
             {% endif %}
             <td>{{ obj.begins_at.get_weeks.week_3_start }}</td>
@@ -87,10 +87,10 @@
             <td>{{ obj.get_week_efficiency.week_4 }}</td>
             <td>{{ obj.class13_status }}</td>
             <td>{{ obj.class14_status }}</td>
-            {% if queryset.plan_id.package.month_frequency >= 12 %}
+            {% if queryset.plan.package.month_frequency >= 12 %}
             <th>{{ obj.class15_status }}</th>
             {% endif %}
-            {% if queryset.plan_id.package.month_frequency >= 16 %}
+            {% if queryset.plan.package.month_frequency >= 16 %}
             <th>{{ obj.class16_status }}</th>
             {% endif %}
             <td>{{ obj.begins_at.get_weeks.week_4_start }}</td>
@@ -116,7 +116,7 @@
 
             <div class="btn-group" role="group" aria-label="Second group">
                 <span class="current">
-                    <a href="" class="btn btn-secondary disabled" role="button">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+                    <a href="" class="btn btn-secondary disabled" role="button">Current page: {{ page_obj.number }}</a>
                 </span>
             </div>
             

@@ -8,9 +8,9 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbar">
-        {% if session.user_id %}
+        {% if request.user.is_authenticated %}
             <ul class="navbar-nav mr-auto mt-2">
-                <li class="nav-item"><a class="nav-link" href="/trainer/clients">Alunos</a></li>
+                <li class="nav-item"><a class="nav-link">Hello, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a></li>
             </ul>
             <ul class="navbar-nav ml-auto mt-2">
                 <div class="dropdown">
@@ -27,14 +27,14 @@
                         <a class="dropdown-item" href="/">Manage Money</a>
                         <a class="dropdown-item" href="/">Change Password</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/">Log Out</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
                     </div>
                 </div>
             </ul>
         {% else %}
             <ul class="navbar-nav ml-auto mt-2">
-                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
             </ul>
         {% endif %}
     </div>

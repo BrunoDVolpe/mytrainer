@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # own apps
     'trainer',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logir URL to redirect when user not authenticated
+LOGIN_URL = '/login/'

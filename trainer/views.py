@@ -1,16 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from .models import ClientProfile, TrainingInstance
+from .models import ClientProfile, TrainingInstance, TrainerProfile
 from .forms import TrainingInstanceUpdateForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def clientsList(request, *args, **kwargs):
     queryset = ClientProfile.objects.all()
+    user = request.user
     context = {
-        'clients': queryset
+        'clients': queryset,
+        'user': user,
     }
     return render(request, 'clients_list.html', context)
 
+@login_required
 def clientDetail(request, id=id, pk_train=None, *args, **kwargs):
     #queryset = ClientProfile.objects.get(id=id)
     queryset = get_object_or_404(ClientProfile, id=id)
@@ -37,7 +42,7 @@ def clientDetail(request, id=id, pk_train=None, *args, **kwargs):
     }
     return render(request, 'client_detail.html',context)
 
-
+@login_required
 def clientTrainUpdate(request, id, pk_train, *args, **kwargs):
     queryset = get_object_or_404(ClientProfile, id=id)
     obj = get_object_or_404(TrainingInstance, client_id=id, pk=pk_train)

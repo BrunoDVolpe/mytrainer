@@ -74,6 +74,11 @@ class TrainerProfile(models.Model):
     """Model representing the personal trainer."""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
+
+    class Meta:
+        permissions = [
+            ("personal_trainer", "Can have access to personal trainer data")
+        ]
     
     def __str__(self):
         """String for representing the Model object."""

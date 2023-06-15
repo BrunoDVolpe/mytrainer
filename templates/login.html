@@ -4,13 +4,8 @@
 
 {% block content %}
 <div class = "login">
-
-    {% if messages %}
-        <div class="messages"> 
-            {% for message in messages %}
-                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            {% endfor %}
-        </div> 
+    {% if form.errors %}
+        <p>Incorrect email or password. Please try again.</p>
     {% endif %}
     
     <h1>Login</h1>

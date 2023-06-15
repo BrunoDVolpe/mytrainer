@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>Homepage user authenticated</p>
+    {% else %}
+        <p>Homepage user not authenticated</p>
+    {% endif %}
+{% endblock %}

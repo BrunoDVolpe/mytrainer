@@ -1,16 +1,22 @@
 {% extends 'layout.html' %}
 
-{% block title %}Meus Alunos{% endblock %}
+{% block title %}My Clients{% endblock %}
 
 {% block content %}
     <table>
         <tr>
-            <th>Clientes</th>
+            <th>My clients</th>
         </tr>
+        {% if clients %}
         {% for client in clients %}
         <tr>
             <td><a href="{{ client.get_absolute_url }}">{{ client.id }} | {{ client.name }}</a></td>
         </tr>
         {% endfor %}
+        {% else %}
+        <tr>
+            <td>You don't have any clients.</td>
+        </tr>
+        {% endif %}
     </table>
 {% endblock %}

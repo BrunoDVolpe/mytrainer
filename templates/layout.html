@@ -31,14 +31,32 @@
                 <div class="col-sm-2">
                     {% block sidebar %}
                         <ul class="sidebar-nav">
-                            <li><a href="{% url 'clients-list' %}">Lista de Clientes</a></li>
-                            <li><a href="">Home</a></li>
-                            <li><a href="">All books</a></li>
-                            <li><a href="">All authors</a></li>
+                            <li><a href="/">Home</a></li>
+                            {% if request.user.is_authenticated %}
+                                {% if user.first_name %}
+                                    </ul>
+                                    <p>{{ user.first_name }}</p>
+                                    <ul>
+                                {% endif %}
+                                {% for group in user.groups.all %}
+                                    {% if group.name == 'personal_trainer' %}
+                                    <li><a href="{% url 'clients-list' %}">My clients</a></li>
+                                    {% endif %}
+                                {% endfor %}    
+                            {% endif %}
                         </ul>
                     {% endblock %}
                 </div>
                 <div class="col-sm-10 ">
+                    <header>
+                        {% if messages %}
+                            <div class="messages"> 
+                                {% for message in messages %}
+                                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                                {% endfor %}
+                            </div> 
+                        {% endif %}
+                    </header>
                     <main>
                         {% block content %}{% endblock %}
                     </main>

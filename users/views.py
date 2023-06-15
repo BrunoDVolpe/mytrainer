@@ -2,9 +2,16 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CustomUserRegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Permission
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Create your views here.
+def homeView(request):
+    context = {}
+    return render(request, 'home.html', context)
+
+
 def registerView(request):
     """Creates a new user to the app"""
     form = CustomUserRegisterForm(request.POST or None)
@@ -13,7 +20,8 @@ def registerView(request):
         messages.success(request, 'User created successfully')
         login(request, user)
         # Redirect to a success page.
-        return redirect('/trainer/clients')
+        return redirect('/profile')
+        #return redirect('/profile/update')
     context = {
         'form': form,
     }
@@ -22,7 +30,7 @@ def registerView(request):
 
 def loginView(request, user=None):
     if request.user.is_authenticated:
-        return redirect('/trainer/clients')
+        return redirect('home')
     form = LoginForm(request.POST or None)
     if form.is_valid():
         email = form.cleaned_data["email"]
@@ -31,7 +39,7 @@ def loginView(request, user=None):
         if user is not None:
             login(request, user)
             # Redirect to a success page.
-            return redirect('/trainer/clients')
+            return redirect('home')
         else:
             # Return an 'invalid login' error message.
             messages.error(request, 'Username or password incorrect')
@@ -46,3 +54,9 @@ def loginView(request, user=None):
 def logoutView(request):
     logout(request)
     return redirect('/login')
+
+
+@login_required
+def userProfileView(request):
+    context = {}
+    return render(request, 'profile.html', context)

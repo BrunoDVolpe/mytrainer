@@ -2,40 +2,27 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import ClientProfile, TrainingInstance, TrainerProfile
 from .forms import TrainingInstanceUpdateForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
+@permission_required('trainer.personal_trainer')
 @login_required
 def clientsList(request, *args, **kwargs):
-    queryset = ClientProfile.objects.all()
-    user = request.user
+    queryset = ClientProfile.objects.filter(personal_trainer__user=request.user)
     context = {
         'clients': queryset,
-        'user': user,
     }
     return render(request, 'clients_list.html', context)
 
 @login_required
 def clientDetail(request, id=id, pk_train=None, *args, **kwargs):
-    #queryset = ClientProfile.objects.get(id=id)
     queryset = get_object_or_404(ClientProfile, id=id)
-    #obj = TrainingInstance.objects.get(id=id)
     objs = TrainingInstance.objects.filter(client_id=id).order_by('-begins_at')
-    #obj = objs[int(request.GET.get('train', objs.count() - 1))] #substituir esse por get_object usando um filtro no objs
-    #print('last: ', objs.last())
-    #print('first:', objs.first())
-    #print('order by date:', objs.order_by('begins_at'))
-    #print('order by -date:', objs.order_by('-begins_at'))
-    
     # Pagination
     paginator = Paginator(objs, 1)
-    #if not train:
-    #    train = objs.count()
-    #page_number = train
     page_number = request.GET.get("train", objs.count())
     page_obj = paginator.get_page(page_number)
-
-    #form = TrainingInstanceForm(request.POST or None, instance=obj)
+    
     context = {
         'queryset': queryset,
         'page_obj': page_obj

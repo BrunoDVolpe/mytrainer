@@ -15,7 +15,7 @@
             <td>{{ request.user.first_name }}</td>
             <td>{{ request.user.last_name }}</td>
             <td>{{ request.user.email }}</td>
-            <td><a class="btn btn-secondary" href="" role="button">Edit</a></td>
+            <td><a class="btn btn-secondary" href="{% url 'profile_update' %}" role="button">Edit</a></td>
         </tr>
     </table>
 {% endblock %}

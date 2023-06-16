@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CustomUserRegisterForm, LoginForm
+from .forms import CustomUserRegisterForm, LoginForm, UserProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.decorators import login_required
@@ -20,8 +20,7 @@ def registerView(request):
         messages.success(request, 'User created successfully')
         login(request, user)
         # Redirect to a success page.
-        return redirect('/profile')
-        #return redirect('/profile/update')
+        return redirect('/profile/update')
     context = {
         'form': form,
     }
@@ -60,3 +59,20 @@ def logoutView(request):
 def userProfileView(request):
     context = {}
     return render(request, 'profile.html', context)
+
+
+@login_required
+def userProfileUpdateView(request):
+    form = UserProfileUpdateForm(instance=request.user)
+    if request.method == 'POST':
+        form = UserProfileUpdateForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=request.user.id)
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.save()
+            return redirect('profile')
+    context = {
+        'form': form,
+    }
+    return render(request, 'profile_update.html', context)

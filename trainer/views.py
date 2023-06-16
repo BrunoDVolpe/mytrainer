@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from .models import ClientProfile, TrainingInstance, TrainerProfile
-from .forms import TrainingInstanceUpdateForm
+from .forms import TrainingInstanceUpdateForm, ClientProfileForm
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import User
 
 # Create your views here.
 @permission_required('trainer.personal_trainer')
@@ -29,6 +30,7 @@ def clientDetail(request, id=id, pk_train=None, *args, **kwargs):
     }
     return render(request, 'client_detail.html',context)
 
+@permission_required('trainer.personal_trainer')
 @login_required
 def clientTrainUpdate(request, id, pk_train, *args, **kwargs):
     queryset = get_object_or_404(ClientProfile, id=id)
@@ -47,3 +49,32 @@ def clientTrainUpdate(request, id, pk_train, *args, **kwargs):
         'form': form,
     }
     return render(request, 'client_train_update.html', context)
+
+
+@permission_required('trainer.personal_trainer')
+@login_required
+def clientCreate(request):
+    user = request.user
+    form = ClientProfileForm(request.POST or None)
+    if request.method == 'POST':
+        # Create a form instance with POST data.
+        if form.is_valid():
+            try:
+                client = User.objects.get(email=form.cleaned_data['client_email'])
+            except:
+                client = None
+            personal_trainer = TrainerProfile.objects.get(user=request.user)
+            # Create, but don't save the new client instance.
+            new_client = form.save(commit=False)
+            new_client.user = client
+            new_client.personal_trainer = personal_trainer
+            # Save the new instance.
+            new_client.save()
+            # Save the many-to-many data for the form.
+            form.save_m2m()
+            return redirect('clients-list')
+            
+    context = {
+        'form': form,
+    }
+    return render(request, 'create_client.html', context)

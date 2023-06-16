@@ -58,8 +58,7 @@ class ClientProfile(models.Model):
         (10, 'Dia 10'),
         (25, 'Dia 25'),
     ]
-    payment_date = models.PositiveIntegerField(choices=PAYMENT_DAY_OPTIONS)
-    #payment_day
+    payment_date = models.PositiveIntegerField(choices=PAYMENT_DAY_OPTIONS) #payment_day
 
 
     def get_absolute_url(self):

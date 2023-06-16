@@ -29,7 +29,7 @@ class CustomUserRegisterForm(UserCreationForm):
             raise ValidationError("Passwords don't match")
         return password2
 
-    def save(self, commit = True):
+    def save(self, commit=True):
         """Saves the user to the database"""
         user = User.objects.create_user(
             self.cleaned_data['username'], # username

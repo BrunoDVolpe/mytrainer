@@ -65,3 +65,12 @@ class TrainingInstanceUpdateForm(forms.ModelForm):
                 #Esse raise não está funcionando.
                 raise forms.ValidationError("This is not a valid class status")
         return cleaned_data
+    
+
+class ClientProfileForm(forms.ModelForm):
+    client_email = forms.EmailField(required=False)
+    # Associar o email com user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
+    
+    class Meta:
+        model = ClientProfile
+        exclude = ['user', 'personal_trainer']

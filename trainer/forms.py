@@ -37,7 +37,12 @@ class TrainingInstanceForm(forms.ModelForm):
 class TrainingInstanceUpdateForm(forms.ModelForm):
     class Meta:
         model = TrainingInstance
+        widgets = {
+          'observations': forms.Textarea(attrs={'rows':4, 'cols':100}),
+        }
         fields = [
+            'payment_status',
+            'observations',
             'class1_status',
             'class2_status',
             'class3_status',
@@ -55,16 +60,6 @@ class TrainingInstanceUpdateForm(forms.ModelForm):
             'class15_status',
             'class16_status'
         ]
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        for data_key in cleaned_data:
-            if not (any(cleaned_data[data_key] in class_status for class_status in TrainingInstance.CLASS_STATUS)) and cleaned_data[data_key] != '':
-                print("erro")
-                #Esse raise não está funcionando.
-                raise forms.ValidationError("This is not a valid class status")
-        return cleaned_data
     
 
 class ClientProfileForm(forms.ModelForm):

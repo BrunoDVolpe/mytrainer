@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.core.exceptions import PermissionDenied
 from .models import ClientProfile, TrainingInstance, TrainerProfile
 from .forms import TrainingInstanceUpdateForm, ClientProfileForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your views here.
 @permission_required('trainer.personal_trainer')
@@ -15,33 +17,57 @@ def clientsList(request, *args, **kwargs):
     }
     return render(request, 'clients_list.html', context)
 
+
 @login_required
-def clientDetail(request, id=id, pk_train=None, *args, **kwargs):
-    queryset = get_object_or_404(ClientProfile, id=id)
-    objs = TrainingInstance.objects.filter(client_id=id).order_by('-begins_at')
-    # Pagination
-    paginator = Paginator(objs, 1)
-    page_number = request.GET.get("train", objs.count())
-    page_obj = paginator.get_page(page_number)
+def clientDetail(request, client_id):
+    queryset = get_object_or_404(ClientProfile, id=client_id)
+    objs = TrainingInstance.objects.filter(client_id=client_id).order_by('-begins_at')
     
+    # Validating access to client's info
+    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+        raise PermissionDenied()
+
     context = {
         'queryset': queryset,
-        'page_obj': page_obj
+        'trains': objs,
     }
     return render(request, 'client_detail.html',context)
 
+
+@login_required
+def clientTrain(request, client_id, pk_train, *args, **kwargs):
+    queryset = get_object_or_404(ClientProfile, id=client_id)
+    # Validating access to client's info
+    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+        raise PermissionDenied()
+    trains = TrainingInstance.objects.filter(client_id=client_id).order_by('-begins_at')
+    obj = get_object_or_404(TrainingInstance, client_id=client_id, pk=pk_train)
+    
+    context = {
+        'queryset': queryset,
+        'obj': obj,
+        'trains': trains,
+    }
+    return render(request, 'client_train.html',context)
+
+
 @permission_required('trainer.personal_trainer')
 @login_required
-def clientTrainUpdate(request, id, pk_train, *args, **kwargs):
-    queryset = get_object_or_404(ClientProfile, id=id)
-    obj = get_object_or_404(TrainingInstance, client_id=id, pk=pk_train)
+def clientTrainUpdate(request, client_id, pk_train, *args, **kwargs):
+    queryset = get_object_or_404(ClientProfile, id=client_id)
+    # Validating access to client's info
+    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+        raise PermissionDenied()
+    obj = get_object_or_404(TrainingInstance, client_id=client_id, pk=pk_train)
     form = TrainingInstanceUpdateForm(request.POST or None, instance=obj)
 
-    if form.is_valid():
-        print("form válido")
-    else:
-        print("form inválido")
-        form = TrainingInstanceUpdateForm(None, instance=obj)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page.
+            return redirect(reverse("client-train", args=[client_id, pk_train]))
+        else:
+            print("form inválido") # Just validation
 
     context = {
         'queryset': queryset,
@@ -54,7 +80,6 @@ def clientTrainUpdate(request, id, pk_train, *args, **kwargs):
 @permission_required('trainer.personal_trainer')
 @login_required
 def clientCreate(request):
-    user = request.user
     form = ClientProfileForm(request.POST or None)
     if request.method == 'POST':
         # Create a form instance with POST data.

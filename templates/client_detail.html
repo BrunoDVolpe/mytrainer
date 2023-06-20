@@ -3,129 +3,28 @@
 {% block title %}Cliente{% endblock %}
 
 {% block content %}
-    {% for obj in page_obj %}
     <table>
         <tr>
             <th>{{ queryset.name }}</th>
             <th>Pacote</th>
-            <th>Vencimento</th>
-            <th>Pagamento</th>
-            <th>Valor Total</th>
+            <th>Vencimento dia</th>
+            <th>Mensalidade</th>
         </tr>
         <tr>
             <td>{{ queryset.plan.service }}</td>
             <td>{{ queryset.plan.package }}</td>
-            <td>{{ queryset.payment_date|stringformat:"02d" }}/{{ obj.begins_at.initial|date:"m/Y" }}</td>
-            <td>{% if obj.payment_status %}Pago!{% else %}Em aberto{%endif%}</td>
+            <td>{{ queryset.payment_date|stringformat:"02d" }}</td>
             <td>R$ {{ queryset.plan.price }}</td>
         </tr>
     </table>
 
     <hr>
-    
-    <table>
-        <tr>
-            <th>{{ obj.begins_at.get_month }}</th>
-            <th>Aproveitamento Semanal</th>
-            <th>Aula 1</th>
-            <th>Aula 2</th>
-            {% if queryset.plan.package.month_frequency >= 12 %}
-            <th>Aula 3</th>
-            {% endif %}
-            {% if queryset.plan.package.month_frequency >= 16 %}
-            <th>Aula 4</th>
-            {% endif %}
-            <th>Timeline - Start</th>
-            <th>Timeline - End</th>
-            <th>Aproveitamento Total</th>
-        </tr>
-        <tr>
-            <td>Semana 1</td>
-            <td>{{ obj.get_week_efficiency.week_1 }}</td>
-            <td>{{ obj.class1_status }}</td>
-            <td>{{ obj.class2_status }}</td>
-            {% if queryset.plan.package.month_frequency >= 12 %}
-            <th>{{ obj.class3_status }}</th>
-            {% endif %}
-            {% if queryset.plan.package.month_frequency >= 16 %}
-            <th>{{ obj.class4_status }}</th>
-            {% endif %}
-            <td>{{ obj.begins_at.get_weeks.week_1_start }}</td>
-            <td>{{ obj.begins_at.get_weeks.week_1_end }}</td>
-            <td>{{ obj.get_month_efficiency }}</td>
-        </tr>
-        <tr>
-            <td>Semana 2</td>
-            <td>{{ obj.get_week_efficiency.week_2 }}</td>
-            <td>{{ obj.class5_status }}</td>
-            <td>{{ obj.class6_status }}</td>
-            {% if queryset.plan.package.month_frequency >= 12 %}
-            <th>{{ obj.class7_status }}</th>
-            {% endif %}
-            {% if queryset.plan.package.month_frequency >= 16 %}
-            <th>{{ obj.class8_status }}</th>
-            {% endif %}
-            <td>{{ obj.begins_at.get_weeks.week_2_start }}</td>
-            <td>{{ obj.begins_at.get_weeks.week_2_end }}</td>
-        </tr>
-        <tr>
-            <td>Semana 3</td>
-            <td>{{ obj.get_week_efficiency.week_3 }}</td>
-            <td>{{ obj.class9_status }}</td>
-            <td>{{ obj.class10_status }}</td>
-            {% if queryset.plan.package.month_frequency >= 12 %}
-            <th>{{ obj.class11_status }}</th>
-            {% endif %}
-            {% if queryset.plan.package.month_frequency >= 16 %}
-            <th>{{ obj.class12_status }}</th>
-            {% endif %}
-            <td>{{ obj.begins_at.get_weeks.week_3_start }}</td>
-            <td>{{ obj.begins_at.get_weeks.week_3_end }}</td>
-        </tr>
-        <tr>
-            <td>Semana 4</td>
-            <td>{{ obj.get_week_efficiency.week_4 }}</td>
-            <td>{{ obj.class13_status }}</td>
-            <td>{{ obj.class14_status }}</td>
-            {% if queryset.plan.package.month_frequency >= 12 %}
-            <th>{{ obj.class15_status }}</th>
-            {% endif %}
-            {% if queryset.plan.package.month_frequency >= 16 %}
-            <th>{{ obj.class16_status }}</th>
-            {% endif %}
-            <td>{{ obj.begins_at.get_weeks.week_4_start }}</td>
-            <td>{{ obj.begins_at.get_weeks.week_4_end }}</td>
-        </tr>
-    </table>
-    <hr>
-    <div class="height-train-observations">
-        <p class="text-left"><b>OBSERVAÇÕES</b></p>
-        <p class="text-left">{{ obj.observations }}</p>
-    </div>
-    {% endfor %}
 
-    <!-- Pagination -->
-    <div class="btn-toolbar pagination" role="toolbar" aria-label="Toolbar with button groups">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-            <div class="btn-group" role="group" aria-label="First group">
-                <a href="?train=1" class="btn btn-secondary" role="button">&laquo; first</a>
-                <a href="?train={{ page_obj.previous_page_number }}" class="btn btn-secondary" role="button">previous</a>
-            </div>
-            {% endif %}
-
-            <div class="btn-group" role="group" aria-label="Second group">
-                <span class="current">
-                    <a href="" class="btn btn-secondary disabled" role="button">Current page: {{ page_obj.number }}</a>
-                </span>
-            </div>
-            
-            {% if page_obj.has_next %}
-            <div class="btn-group" role="group" aria-label="Third group">
-                <a href="?train={{ page_obj.next_page_number }}" class="btn btn-secondary" role="button">next</a>
-                <a href="?train={{ page_obj.paginator.num_pages }}" class="btn btn-secondary" role="button">last &raquo;</a>
-            </div>
-            {% endif %}
-        </span>
-    </div>
+    <label for="train-select">Choose a train:</label>
+    <select name="train" id="train-select" onchange='if(this.value != 0) { window.location = $(this).val(); }'>
+        <option value="" selected disabled>--Please choose a train--</option>
+        {% for train in trains %}
+        <option value="{{ train.get_absolute_url }}">{{ train }}</option>
+        {% endfor %}
+    </select>
 {% endblock %}

@@ -132,7 +132,10 @@ small {
     padding-top: 20px;
 }
 
-.height-train-observations {
-    height: 100px;
-    max-height: 100px;
+.train-observations {
+    height: auto;
+}
+
+.train-observations textarea {
+    width: 100%;
 }

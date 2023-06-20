@@ -3,6 +3,14 @@
 {% block title %}Edição do Treino{% endblock %}
 
 {% block content %}
+    {% if form.errors %}
+    <ul>
+        {% for error in form.errors %}
+            <li>Invalid data at {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <form method='POST'> {% csrf_token %}
         <table>
             <tr>
@@ -16,7 +24,7 @@
                 <td>{{ queryset.plan.service }}</td>
                 <td>{{ queryset.plan.package }}</td>
                 <td>{{ queryset.payment_date|stringformat:"02d" }}/{{ obj.begins_at.initial|date:"m/Y" }}</td>
-                <td>{% if obj.payment_status %}Pago!{% else %}Em aberto{%endif%}</td>
+                <td>{{ form.payment_status }}</td>
                 <td>R$ {{ queryset.plan.price }}</td>
             </tr>
         </table>
@@ -98,10 +106,10 @@
             </tr>
         </table>
         <hr>
-        <div class="height-train-observations">
+        <div class="train-observations">
             <p class="text-left"><b>OBSERVAÇÕES</b></p>
-            <p class="text-left">{{ obj.observations }}</p>
+            <p class="text-left">{{ form.observations }}</p>
         </div>
-        <button class="btn btn-primary" type="submit">Salvar</button>
+        <button class="btn btn-primary" type="submit">Save</button> <span>or <a href="{% url 'client-train' queryset.id obj.id %}">cancel</a></span>
     </form>
 {% endblock %}

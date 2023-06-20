@@ -62,8 +62,10 @@ class ClientProfile(models.Model):
 
 
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this client."""
+        """Return the url to access client details"""
         return reverse('client-detail', args=[str(self.id)])
+        #"""Returns the url to access a detail record for this client and brings the first train of this client."""
+        #return reverse('client-train', args=[str(self.id), '1'])
     
     def __str__(self):
         """String for representing the Model object."""
@@ -308,6 +310,10 @@ class TrainingInstance(models.Model):
         }
 
         return data
+    
+    def get_absolute_url(self):
+        """Return the url to access client's train"""
+        return reverse('client-train', args=[str(self.client_id.id), str(self.id)])
 
     def __str__(self):
-        return f"Início: {self.begins_at} | Aluno: {self.client_id}"
+        return f"Mês: {self.begins_at} | Aluno: {self.client_id}"

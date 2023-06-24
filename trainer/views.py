@@ -112,10 +112,10 @@ def clientCreate(request):
 @login_required
 def clientTrainCreate(request, client_id, *args, **kwargs):
     # Getting the client profile
-    queryset = get_object_or_404(ClientProfile, id=client_id)
+    client_instance = get_object_or_404(ClientProfile, id=client_id)
 
     # Validating personal_trainer is the client's personal trainer
-    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+    if get_object_or_404(TrainerProfile, user=request.user) != client_instance.personal_trainer:
         raise PermissionDenied()
    
     # Form to create a new StartPeriod in the modal
@@ -130,16 +130,17 @@ def clientTrainCreate(request, client_id, *args, **kwargs):
         initial_date = request.POST.get('start_date_id')
         if initial_date in [str(date.pk) for date in dates]:
             period = get_object_or_404(StartPeriod, pk=int(request.POST.get('start_date_id')))
-            train = TrainingInstance.create(queryset, period)
-            print('train:', train)
-            # Redirect to the trains page.
-            #return redirect(reverse("client-train", args=[client_id, new_train.pk]))
+            train = TrainingInstance.create(client_instance, period)
+            if train:
+                # Redirect to the trains page.
+                return redirect(reverse("client-train-update", args=[client_id, train.pk]))
+            messages.error(request, 'This client has already a train in this month')
         else:
-            print('Não funcionou o formulário de criação do novo treino')
+            messages.error(request, 'Error. Train not created.')
 
 
     context = {
-        'queryset': queryset,
+        'client': client_instance,
         'form': form_period,
         'dates': dates,
     }

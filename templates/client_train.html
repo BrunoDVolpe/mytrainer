@@ -14,7 +14,7 @@
                 {% endfor %}
             </select>
             <a href="update" class="btn btn-secondary btn-sm" role="button">Edit train</a>
-            <a href="" class="btn btn-primary btn-sm" role="button">New train</a>
+            <a href="{% url 'client-detail' queryset.id %}create/" class="btn btn-primary btn-sm" role="button">New train</a>
         </span>
 
     <hr>

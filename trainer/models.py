@@ -268,9 +268,13 @@ class TrainingInstance(models.Model):
 
     @classmethod
     def create(cls, client_instance, period_instance):
-        training_instance = cls(client_id=client_instance, begins_at=period_instance)
-        #training_instance.save()
-        print('Training Instance antes de save (validar se consigo por if):', training_instance)
+        queryset = TrainingInstance.objects.filter(client=client_instance)
+        for instance in queryset:
+            if instance.begins_at == period_instance:
+                print('ERRO CREATE (em Model da TrainingInstance: Já existe uma TrainingInstance com essa data (begins_at) para esse usuário')
+                return None
+        training_instance = cls(client=client_instance, begins_at=period_instance)
+        training_instance.save()
         return training_instance
 
     def get_classes(self):
@@ -299,7 +303,10 @@ class TrainingInstance(models.Model):
         done = data['done']
         count = data['count']
 
-        return f"{done} de {count} = {done/count*100:.2f}%"
+        if count:
+            return f"{done} de {count} = {done/count*100:.2f}%"
+        else:
+            return "-"
 
     def get_week_efficiency(self):
         class_week_1 = self.get_classes()[:4]

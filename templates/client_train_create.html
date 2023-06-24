@@ -13,18 +13,16 @@
 
     <table>
         <tr>
-            <th>{{ queryset.name }}</th>
+            <th>{{ client.name }}</th>
             <th>Pacote</th>
             <th>Vencimento</th>
-            <th>Pagamento</th>
             <th>Valor Total</th>
         </tr>
         <tr>
-            <td>{{ queryset.plan.service }}</td>
-            <td>{{ queryset.plan.package }}</td>
-            <td>Dia {{ queryset.payment_date|stringformat:"02d" }}</td>
-            <td></td>
-            <td>R$ {{ queryset.plan.price }}</td>
+            <td>{{ client.plan.service }}</td>
+            <td>{{ client.plan.package }}</td>
+            <td>Dia {{ client.payment_date|stringformat:"02d" }}</td>
+            <td>R$ {{ client.plan.price }}</td>
         </tr>
     </table>
     <hr>
@@ -34,7 +32,7 @@
             <option value="{{ date.id }}">{{ date }}</option>
         {% endfor %}
         </select>
-        <button class="btn btn-primary" type="submit">Save</button> <span>or <a href="{% url 'client-detail' queryset.id %}">cancel</a></span>
+        <button class="btn btn-primary" type="submit">Save</button> <span>or <a href="{% url 'client-detail' client.id %}">cancel</a></span>
     </form>
     
     <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#newDate">
@@ -58,7 +56,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-                <form id="new_date" method='POST' action="{% url 'new-date' %}?next={% url 'client-train-create' queryset.id %}"> {% csrf_token %}
+                <form id="new_date" method='POST' action="{% url 'new-date' %}?next={% url 'client-train-create' client.id %}"> {% csrf_token %}
                     <table>
                         <tr>
                             <th>{{ form.initial.label }}</th>

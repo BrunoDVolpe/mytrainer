@@ -1,3 +1,34 @@
+html
+{
+    height: 100%;              /* for the page to take full window height */
+    box-sizing: border-box;    /* to have the footer displayed at the bottom of the page without scrolling */
+}
+
+*,
+*:before,
+*:after
+{
+    box-sizing: inherit;       /* enable the "border-box effect" everywhere */
+}
+
+body
+{
+    position: relative; /* for the footer to move with the page size */
+    min-height: 100%; /* for the footer to be at the bottom */
+    padding-bottom: 6rem; /* Space available between last element and bottom border of the page */
+}
+
+footer
+{
+    background-color: #f8f9fa;
+    padding: 20px 0 10px;
+    position: fixed; /* fixed to the bottom and always on screen */
+    left: 0;
+    bottom: 0; /* so the footer can stick to the bottom*/
+    width: 100%;
+    text-align: center;
+}
+
 nav .navbar-brand
 {
     /* size for brand */
@@ -9,22 +40,27 @@ nav .navbar-brand .blue
 {
     color: #537fbe;
 }
+
 nav .navbar-brand .red
 {
     color: #ea433b;
 }
+
 nav .navbar-brand .yellow
 {
     color: #f5b82e;
 }
+
 nav .navbar-brand .green
 {
     color: #185d49;
 }
+
 nav .navbar-brand .light-green
 {
     color: #bee2e4;
 }
+
 nav .navbar-brand .gray
 {
     color: #23262e;
@@ -57,13 +93,15 @@ main img
     max-height: 400px;
 }
 
-table {
+table
+{
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-td, th {
+td, th
+{
     border-width: 1px 0px;
     border-style: solid;
     border-color: #dee2e6;
@@ -72,49 +110,49 @@ td, th {
     vertical-align: middle;
 }
 
-tr:nth-child(even) {
+tr:nth-child(even)
+{
     background-color: #f8f9fa;
 }
 
-tr:last-child.total td {
+tr:last-child.total td
+{
     font-weight: bold;
     border-bottom-style: none;
 }
 
-tr:last-child.total {
+tr:last-child.total
+{
     background-color: transparent;
 }
 
-tr th {
+tr th
+{
     border-top-style: none;
 }
 
-input[type='number'] {
+input[type='number']
+{
     width: 101px;
 }
 
-li a {
+li a
+{
     padding-left: 8px;
 }
 
-h2 {
+h2
+{
     padding: 25px 15px 15px;
 }
 
-footer {
-    padding: 20px 0 10px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-}
-
-.dots {
+.dots
+{
     width: 45px;
 }
 
-.vl {
+.vl
+{
     border-left-width: 3px;
     border-left-style: solid;
     height: 50px;
@@ -122,20 +160,25 @@ footer {
     margin: 0 20px;
 }
 
-small {
+small
+{
     display: inline-block;
     width: 210px;
 }
 
 .pagination,
-.first-row {
+.first-row
+{
     padding-top: 20px;
 }
 
-.train-observations {
+.train-observations
+{
+    display: block;
     height: auto;
 }
 
-.train-observations textarea {
+.train-observations textarea
+{
     width: 100%;
 }

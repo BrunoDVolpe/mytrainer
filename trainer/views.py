@@ -1,11 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
-from .models import ClientProfile, TrainingInstance, TrainerProfile
-from .forms import TrainingInstanceUpdateForm, ClientProfileForm
+from .models import ClientProfile, TrainingInstance, TrainerProfile, StartPeriod
+from .forms import (TrainingInstanceUpdateForm, ClientProfileForm,
+                    StartPeriodCreateForm)
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.urls import reverse
+from django.http import HttpResponse
 
 # Create your views here.
 @permission_required('trainer.personal_trainer')
@@ -103,3 +106,56 @@ def clientCreate(request):
         'form': form,
     }
     return render(request, 'create_client.html', context)
+
+
+@permission_required('trainer.personal_trainer')
+@login_required
+def clientTrainCreate(request, client_id, *args, **kwargs):
+    # Getting the client profile
+    queryset = get_object_or_404(ClientProfile, id=client_id)
+
+    # Validating personal_trainer is the client's personal trainer
+    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+        raise PermissionDenied()
+   
+    # Form to create a new StartPeriod in the modal
+    form_period = StartPeriodCreateForm()
+
+
+    # Get available dates
+    dates = StartPeriod.objects.all().order_by('-initial')
+
+
+    if request.method == 'POST':
+        initial_date = request.POST.get('start_date_id')
+        if initial_date in [str(date.pk) for date in dates]:
+            period = get_object_or_404(StartPeriod, pk=int(request.POST.get('start_date_id')))
+            train = TrainingInstance.create(queryset, period)
+            print('train:', train)
+            # Redirect to the trains page.
+            #return redirect(reverse("client-train", args=[client_id, new_train.pk]))
+        else:
+            print('Não funcionou o formulário de criação do novo treino')
+
+
+    context = {
+        'queryset': queryset,
+        'form': form_period,
+        'dates': dates,
+    }
+    return render(request, 'client_train_create.html', context)
+
+
+@permission_required('trainer.personal_trainer')
+@login_required
+def startPeriodCreate(request, *args, **kwargs):
+    form_period = StartPeriodCreateForm(request.POST or None)
+    if request.method == 'POST':
+        if form_period.is_valid():
+            form_period.save()
+            messages.success(request, 'New date created successfully')
+            return redirect(request.GET.get('next'))
+        else:
+            messages.error(request, 'Date already exist')
+            return redirect(request.GET.get('next'))
+    return HttpResponse(status=405)

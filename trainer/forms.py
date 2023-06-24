@@ -69,3 +69,17 @@ class ClientProfileForm(forms.ModelForm):
     class Meta:
         model = ClientProfile
         exclude = ['user', 'personal_trainer']
+
+
+class StartPeriodCreateForm(forms.ModelForm):
+    initial = forms.DateField(
+        widget=forms.DateInput(format=('%d-%m-%Y'),
+                               attrs={'class': 'startPeriodClass',
+                                      'placeholder': 'Select a date',
+                                      'type': 'date',
+                                      }),
+        label='Início da semana 1',)
+   
+    class Meta:
+        model = StartPeriod
+        fields = ['initial']

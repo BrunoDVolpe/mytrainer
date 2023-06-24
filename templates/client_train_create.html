@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+
+{% block title %}Edição do Treino{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+    <ul>
+        {% for error in form.errors %}
+            <li>Invalid data at {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>{{ queryset.name }}</th>
+            <th>Pacote</th>
+            <th>Vencimento</th>
+            <th>Pagamento</th>
+            <th>Valor Total</th>
+        </tr>
+        <tr>
+            <td>{{ queryset.plan.service }}</td>
+            <td>{{ queryset.plan.package }}</td>
+            <td>Dia {{ queryset.payment_date|stringformat:"02d" }}</td>
+            <td></td>
+            <td>R$ {{ queryset.plan.price }}</td>
+        </tr>
+    </table>
+    <hr>
+    <form method='POST'> {% csrf_token %}
+        <select name="start_date_id" id="StartDateId">
+        {% for date in dates %}
+            <option value="{{ date.id }}">{{ date }}</option>
+        {% endfor %}
+        </select>
+        <button class="btn btn-primary" type="submit">Save</button> <span>or <a href="{% url 'client-detail' queryset.id %}">cancel</a></span>
+    </form>
+    
+    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#newDate">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-plus" viewBox="0 0 16 16">
+            <path d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"></path>
+            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"></path>
+        </svg>
+        Nova data
+    </button>
+
+    <!-- The Modal -->
+    <div class="modal" id="newDate">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Nova data</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="new_date" method='POST' action="{% url 'new-date' %}?next={% url 'client-train-create' queryset.id %}"> {% csrf_token %}
+                    <table>
+                        <tr>
+                            <th>{{ form.initial.label }}</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{ form.initial }}
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" form="new_date">Save</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+{% endblock %}

@@ -266,6 +266,13 @@ class TrainingInstance(models.Model):
 
     observations = models.TextField(max_length=1000, blank=True, help_text='Enter any observation about this month')
 
+    @classmethod
+    def create(cls, client_instance, period_instance):
+        training_instance = cls(client_id=client_instance, begins_at=period_instance)
+        #training_instance.save()
+        print('Training Instance antes de save (validar se consigo por if):', training_instance)
+        return training_instance
+
     def get_classes(self):
         return [self.class1_status, self.class2_status, self.class3_status, self.class4_status,
                 self.class5_status, self.class6_status, self.class7_status, self.class8_status,

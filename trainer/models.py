@@ -128,7 +128,7 @@ class StartPeriod(models.Model):
 class TrainingInstance(models.Model):
     """This class represents a client's view classes and payment status for a monthly control."""
     begins_at = models.ForeignKey(StartPeriod, on_delete=models.DO_NOTHING)
-    client_id = models.ForeignKey(ClientProfile, on_delete=models.CASCADE) #retorna name e não id
+    client = models.ForeignKey(ClientProfile, on_delete=models.CASCADE)
 
     payment_status = models.BooleanField(default=False)
 
@@ -313,7 +313,7 @@ class TrainingInstance(models.Model):
     
     def get_absolute_url(self):
         """Return the url to access client's train"""
-        return reverse('client-train', args=[str(self.client_id.id), str(self.id)])
+        return reverse('client-train', args=[str(self.client.id), str(self.id)])
 
     def __str__(self):
-        return f"Mês: {self.begins_at} | Aluno: {self.client_id}"
+        return f"Mês: {self.begins_at} | Aluno: {self.client}"

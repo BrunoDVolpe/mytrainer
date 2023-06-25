@@ -38,11 +38,15 @@
                                     <p>{{ user.first_name }}</p>
                                     <ul>
                                 {% endif %}
+                                
                                 {% for group in user.groups.all %}
                                     {% if group.name == 'personal_trainer' %}
-                                    <li><a href="{% url 'clients-list' %}">My clients</a></li>
+                                        <li><a href="{% url 'clients-list' %}">My clients</a></li>
                                     {% endif %}
-                                {% endfor %}    
+                                {% endfor %}
+                                {% if request.user.clientprofile.id %}
+                                    <li><a href="{% url 'client-detail' request.user.clientprofile.id %}">My train</a></li>
+                                {% endif %}
                             {% endif %}
                         </ul>
                     {% endblock %}

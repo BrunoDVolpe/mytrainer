@@ -25,24 +25,23 @@ def clientsList(request, *args, **kwargs):
 def clientDetail(request, client_id):
     queryset = get_object_or_404(ClientProfile, id=client_id)
     objs = TrainingInstance.objects.filter(client_id=client_id).order_by('-begins_at')
-    
-    # Validating access to client's info
-    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
-        raise PermissionDenied()
 
     context = {
         'queryset': queryset,
         'trains': objs,
     }
+
+    # Validating access to client's info. If not Trainer, 404 error
+    if request.user != queryset.user:
+        if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+            raise PermissionDenied()
+    
     return render(request, 'client_detail.html',context)
 
 
 @login_required
 def clientTrain(request, client_id, pk_train, *args, **kwargs):
     queryset = get_object_or_404(ClientProfile, id=client_id)
-    # Validating access to client's info
-    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
-        raise PermissionDenied()
     trains = TrainingInstance.objects.filter(client_id=client_id).order_by('-begins_at')
     obj = get_object_or_404(TrainingInstance, client_id=client_id, pk=pk_train)
     
@@ -51,6 +50,12 @@ def clientTrain(request, client_id, pk_train, *args, **kwargs):
         'obj': obj,
         'trains': trains,
     }
+
+    # Validating access to client's info. If not Trainer, 404 error
+    if request.user != queryset.user:
+        if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+            raise PermissionDenied()
+    
     return render(request, 'client_train.html',context)
 
 
@@ -58,7 +63,7 @@ def clientTrain(request, client_id, pk_train, *args, **kwargs):
 @login_required
 def clientTrainUpdate(request, client_id, pk_train, *args, **kwargs):
     queryset = get_object_or_404(ClientProfile, id=client_id)
-    # Validating access to client's info
+    # Validating access to client's info. If not Trainer, 404 error
     if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
         raise PermissionDenied()
     obj = get_object_or_404(TrainingInstance, client_id=client_id, pk=pk_train)

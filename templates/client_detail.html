@@ -27,5 +27,9 @@
         <option value="{{ train.get_absolute_url }}">{{ train }}</option>
         {% endfor %}
     </select>
-    <a class="btn btn-primary btn-sm" href="{% url 'client-detail' queryset.id %}create/" role="button">New train</a>
+    {% for group in user.groups.all %}
+        {% if group.name == 'personal_trainer' %}
+        <a class="btn btn-primary btn-sm" href="{% url 'client-detail' queryset.id %}create/" role="button">New train</a>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

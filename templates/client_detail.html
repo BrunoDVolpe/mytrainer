@@ -6,15 +6,31 @@
     <table>
         <tr>
             <th>{{ queryset.name }}</th>
+            <th>Usuário</th>
             <th>Pacote</th>
             <th>Vencimento dia</th>
             <th>Mensalidade</th>
+            <th></th>
         </tr>
         <tr>
             <td>{{ queryset.plan.service }}</td>
+            <td>
+                {% if queryset.user %}
+                    {{ queryset.user.email }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
             <td>{{ queryset.plan.package }}</td>
             <td>{{ queryset.payment_date|stringformat:"02d" }}</td>
             <td>R$ {{ queryset.plan.price }}</td>
+            <td>
+                {% for group in user.groups.all %}
+                    {% if group.name == 'personal_trainer' %}
+                    <a class="btn btn-secondary btn-sm" href="{% url 'client-edit' queryset.id %}" role="button">Edit</a>
+                    {% endif %}
+                {% endfor %}
+            </td>
         </tr>
     </table>
 

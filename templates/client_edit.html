@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block title %}Cliente{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>{{ queryset.name }}</th>
+            <th>Pacote</th>
+            <th>Vencimento dia</th>
+            <th>Mensalidade</th>
+        </tr>
+        <tr>
+            <td>{{ queryset.plan.service }}</td>
+            <td>{{ queryset.plan.package }}</td>
+            <td>{{ queryset.payment_date|stringformat:"02d" }}</td>
+            <td>R$ {{ queryset.plan.price }}</td>
+        </tr>
+    </table>
+
+    <hr>
+    <form method="post"> {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Save"> or <a href="{% url 'client-detail' queryset.id %}">cancel</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

@@ -165,3 +165,39 @@ def startPeriodCreate(request, *args, **kwargs):
             messages.error(request, 'Date already exist')
             return redirect(request.GET.get('next'))
     return HttpResponse(status=405)
+
+
+@permission_required('trainer.personal_trainer')
+@login_required
+def clientEdit(request, client_id):
+    queryset = get_object_or_404(ClientProfile, id=client_id)
+    personal_clients = ClientProfile.objects.filter(personal_trainer__user=request.user)
+    # Validating access to client's info. If not Trainer, 404 error
+    if get_object_or_404(TrainerProfile, user=request.user) != queryset.personal_trainer:
+        raise PermissionDenied()
+    form = ClientProfileForm(request.POST or None, instance=queryset)
+    if request.method == 'POST':
+        if form.is_valid():
+                form.save()
+                messages.success(request, 'Client edited successfully!')
+                try:
+                    user = User.objects.get(email=form.cleaned_data['client_email'])
+                except:
+                    user = None
+                if user:
+                    queryset.user = user
+                    queryset.save()
+                    messages.success(request, 'Client linked successfully to a user!')
+                    return redirect(reverse("client-detail", args=[client_id]))
+                else:
+                    queryset.user = None
+                    queryset.save()
+                    messages.error(request, 'User not found with this email. Please consider reviewing the registered email.')
+                    return redirect(reverse("client-detail", args=[client_id]))
+    
+    context = {
+        'form': form,
+        'clients': personal_clients,
+        'queryset': queryset,
+    }
+    return render(request, 'client_edit.html', context)

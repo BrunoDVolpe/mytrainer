@@ -50,6 +50,7 @@ class ClientProfile(models.Model):
     """Model representing the personal clients."""
     user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True, null=True, default=None)
     name = models.CharField(max_length=100)
+    client_email = models.EmailField(blank=True, null=True, default=None)
     plan = models.ForeignKey(UsersPlan, on_delete=models.SET_NULL, blank=True, null=True)
     personal_trainer = models.ForeignKey("TrainerProfile", on_delete=models.SET_NULL, blank=True, null=True)
     

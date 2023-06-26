@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import CustomUserRegisterForm, LoginForm, UserProfileUpdateForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from trainer.models import ClientProfile
 
 # Create your views here.
 def homeView(request):
@@ -19,9 +20,19 @@ def registerView(request):
     if form.is_valid():
         user = form.save()
         messages.success(request, 'User created successfully')
+        # Logins the user
         login(request, user)
+
+        # Link user to a ClientProfile
+        try:
+            client_profile = ClientProfile.objects.get(client_email=user.email)
+            client_profile.user = user
+            client_profile.save()
+        except:
+            pass
         # Redirect to a success page.
         return redirect('/profile/update')
+    
     context = {
         'form': form,
     }

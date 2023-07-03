@@ -3,9 +3,10 @@
 {% block title %}My Clients{% endblock %}
 
 {% block content %}
+<div class = "form-register pt-3">
     <table>
         <tr>
-            <th>My clients</th>
+            <th><h1 class="h3 mb-3 font-weight-normal">My clients</h1></th>
         </tr>
         {% if clients %}
         {% for client in clients %}
@@ -19,5 +20,6 @@
         </tr>
         {% endif %}
     </table>
-    <p><a class="btn btn-primary" href="{% url 'client-create' %}" role="button">New Client</a></p>
+    <p><a class="btn btn-primary mt-3" href="{% url 'client-create' %}" role="button">New Client</a></p>
+</div>
 {% endblock %}

@@ -3,19 +3,37 @@
 {% block title %}My profile{% endblock %}
 
 {% block content %}
-    <h2>My profile</h2>
-    <table>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td>{{ request.user.first_name }}</td>
-            <td>{{ request.user.last_name }}</td>
-            <td>{{ request.user.email }}</td>
-            <td><a class="btn btn-secondary" href="{% url 'profile_update' %}" role="button">Edit</a></td>
-        </tr>
-    </table>
+<div class="mb-4 pt-3 text-center form-register">
+    <h2 class="pt-0">My Profile</h2>
+    <hr>
+    <div class="d-flex flex-row mb-3">
+        <table>
+            <tr>
+                <th class="pb-0">First name</th>
+                <th class="pb-0">Last name</th>
+            </tr>
+            <tr>
+                <td>{{ request.user.first_name }}</td>
+                <td>{{ request.user.last_name }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="d-flex flex-row mb-3">
+        <table>
+            <tr>
+                <th class="pb-0">Email</th>
+                {% if trainer_profile %}
+                <th class="pb-0">Professional name</th>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>{{ request.user.email }}</td>
+                {% if trainer_profile %}
+                <td>{{ trainer_profile.name }}</td>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
+    <p><a class="btn btn-secondary mt-2" href="{% url 'profile_update' %}" role="button">Edit</a></p>
+</div>
 {% endblock %}

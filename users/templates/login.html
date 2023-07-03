@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="mb-4 pt-3 text-center login-content">
+    {% if form.errors %}
+        <div class="alert alert-danger messages" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" class="form-signin"> {% csrf_token %}
+        <img class="mb-4" src="{% static 'images/logo_mytrainer_rbg_cropped.png' %}" alt="My Trainer logo. Three Kettlebells." width="72" height="50">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        {{ form }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+{% endblock %}

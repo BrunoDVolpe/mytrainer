@@ -1,16 +1,43 @@
 {% extends 'layout.html' %}
 
-{% block title %}Create client{% endblock %}
+{% block title %}New Client{% endblock %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-            <tr>
-                <th></th>
-                <td><input class="btn btn-primary" type="submit" name="submit" value="Save" /></td>
-            </tr>
-        </table>
-    </form>
+<div class = "register pt-3">
+    {% if form.errors %}
+        <div class="alert alert-danger messages" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            {% endfor %}
+        </div> 
+    {% endif %}
+    <div class="mb-4 text-center">
+        <form method="post" class="form-register"> {% csrf_token %}
+            <h1 class="h3 mb-3 font-weight-normal">Create New Client</h1>
+            <hr>
+            <table class="register-table">
+                <tr>
+                    <th class="w-50">{{ form.name.label }}</th>
+                    <td class="pr-5">{{ form.name }}</td>
+                </tr>
+                <tr>
+                    <th class="w-50">{{ form.client_email.label }}</th>
+                    <td class="pr-5">{{ form.client_email }}</td>
+                </tr>
+                <tr>
+                    <th class="w-50">{{ form.plan.label }}</th>
+                    <td class="pr-5">{{ form.plan }}</td>
+                </tr>
+                <tr>
+                    <th class="w-50">{{ form.payment_date.label }}</th>
+                    <td class="pr-5">{{ form.payment_date }}</td>
+                </tr>
+            </table>
+            <hr>
+            <button class="btn btn-primary mt-3" type="submit">Save</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

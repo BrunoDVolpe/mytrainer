@@ -1,15 +1,16 @@
 {% extends 'layout.html' %}
 
-{% block title %}Cliente{% endblock %}
+{% block title %}Client Details{% endblock %}
 
 {% block content %}
+<div class="pt-3 mb-3 info-overflow">
     <table>
         <tr>
             <th>{{ queryset.name }}</th>
-            <th>Usuário</th>
-            <th>Pacote</th>
-            <th>Vencimento dia</th>
-            <th>Mensalidade</th>
+            <th>User's email</th>
+            <th>Package</th>
+            <th>Due date</th>
+            <th>Monthly payment</th>
             <th></th>
         </tr>
         <tr>
@@ -37,15 +38,18 @@
     <hr>
 
     <label for="train-select">Choose a train:</label>
-    <select name="train" id="train-select" onchange='if(this.value != 0) { window.location = $(this).val(); }'>
+    <select class="mt-3" name="train" id="train-select" onchange='if(this.value != 0) { window.location = $(this).val(); }'>
         <option value="" selected disabled>--Please choose a train--</option>
         {% for train in trains %}
         <option value="{{ train.get_absolute_url }}">{{ train }}</option>
         {% endfor %}
     </select>
+    <p class="mt-3"> or create 
     {% for group in user.groups.all %}
         {% if group.name == 'personal_trainer' %}
         <a class="btn btn-primary btn-sm" href="{% url 'client-detail' queryset.id %}create/" role="button">New train</a>
         {% endif %}
     {% endfor %}
+    </p>
+</div>
 {% endblock %}

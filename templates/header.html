@@ -1,0 +1,37 @@
+{% load static %}
+<!-- Header -->
+<nav class="navbar navbar-expand-md navbar-light bg-light border custom_nav-container">
+    <!-- Navbar brand -->
+    <a class="navbar-brand ml-3" href="/">
+        <img src="{% static 'images/logo_mytrainer_rbg_cropped.png' %}" alt="Logo myTrainer. Three kettlebells" style="width:68px;height:47px;">
+        <span class="gray">my</span><span class="green">Trainer</span>
+    </a>
+    <spam class="flex-fill"></spam>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <!-- Avatar -->
+        <div class="dropdown ms-auto nav-dropdown">
+            <a class="btn dropdown-toggle" href="#" role="button" id="userDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuAvatar">
+                {% if request.user.is_authenticated %}
+                    <h6 class="dropdown-header">Settings</h6>
+                    <li><a class="dropdown-item" href="{% url 'profile' %}">My profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'change_password' %}">Change password</a></li>
+                    <div class="dropdown-divider"></div>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+                {% else %}
+                    <h6 class="dropdown-header">Have an account?</h6>
+                    <li><a class="dropdown-item" href="{% url 'login' %}">Sign in</a></li>
+                    <h6 class="dropdown-header">or create new account</h6>
+                    <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

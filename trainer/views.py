@@ -192,7 +192,7 @@ def clientEdit(request, client_id):
                 else:
                     queryset.user = None
                     queryset.save()
-                    messages.error(request, 'User not found with this email. Please consider reviewing the registered email.')
+                    messages.error(request, "Client's email not found. Please consider reviewing the registered email or ask your client to register.")
                     return redirect(reverse("client-detail", args=[client_id]))
     
     context = {

@@ -1,7 +1,16 @@
+:root {
+    --logo-green: #185d49;
+    --logo-gray: #23262e;
+    --primary-gray: #f8f9fa;
+    --light-blue: #bee2e4;
+    --yellow: #ffc107;
+}
+
 html
 {
     height: 100%;              /* for the page to take full window height */
     box-sizing: border-box;    /* to have the footer displayed at the bottom of the page without scrolling */
+    max-width: 100vw;
 }
 
 *,
@@ -11,22 +20,35 @@ html
     box-sizing: inherit;       /* enable the "border-box effect" everywhere */
 }
 
-body
+#body-container
 {
     position: relative; /* for the footer to move with the page size */
-    min-height: 100%; /* for the footer to be at the bottom */
-    padding-bottom: 6rem; /* Space available between last element and bottom border of the page */
+    /*min-height: 100vh; /* for the footer to be at the bottom */
+    min-height: 90vh;
 }
+
+@media screen and (min-width: 480px)
+{
+    #body-container
+    {
+        min-height: 100vh;
+    }
+}
+
+#content-wrap {
+    padding-bottom: 2.5rem;    /* Footer height */
+  }
 
 footer
 {
-    background-color: #f8f9fa;
-    padding: 20px 0 10px;
-    position: fixed; /* fixed to the bottom and always on screen */
+    background-color: var(--logo-gray);
+    padding: 10px 0 10px;
+    position: absolute; /* fixed to the bottom and always on screen */
     left: 0;
     bottom: 0; /* so the footer can stick to the bottom*/
     width: 100%;
     text-align: center;
+    min-height: 2.5rem;
 }
 
 nav .navbar-brand
@@ -36,21 +58,6 @@ nav .navbar-brand
 }
 
 /* Colors for brand */
-nav .navbar-brand .blue
-{
-    color: #537fbe;
-}
-
-nav .navbar-brand .red
-{
-    color: #ea433b;
-}
-
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-
 nav .navbar-brand .green
 {
     color: #185d49;
@@ -70,15 +77,12 @@ main .form-control
 {
     /* Center form controls */
     display: inline-block;
-
-    /* Override Bootstrap's 100% width for form controls */
-    width: auto;
 }
 
 main
 {
     /* Scroll horizontally as needed */
-    overflow-x: auto;
+    /*overflow-x: auto;*/
 
     /* Center contents */
     text-align: center;
@@ -91,6 +95,12 @@ main img
 
     /* Eu adicionei para a imagem ficar inteira na tela */
     max-height: 400px;
+}
+
+.info-overflow
+{
+    width: 100%;
+    overflow: scroll;
 }
 
 table
@@ -181,4 +191,230 @@ small
 .train-observations textarea
 {
     width: 100%;
+}
+
+.select-period
+{
+    width: 100%;
+    max-width: 100px;
+    padding: 3rem;
+    margin: auto;
+}
+
+.form-signin
+{
+    width: 100%;
+    max-width: 330px;
+    padding: 3rem;
+    margin: auto;
+}
+
+.form-register
+{
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    margin: auto;
+}
+
+.form-signin .checkbox
+{
+    font-weight: 400;
+}
+
+.form-register .form-control,
+.form-signin .form-control
+{
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-register .form-control:focus,
+.form-signin .form-control:focus
+{
+    z-index: 2;
+}
+
+.form-register input[type="email"],
+.form-signin input[type="email"]
+{
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-register input[type="password"],
+.form-signin input[type="password"]
+{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-signin input[type="password"]
+{
+    margin-bottom: 10px;
+}
+
+.help-text-password ul
+{
+    margin-top: -50px;
+    list-style-type: none;
+    padding: 0px;
+}
+
+.register td,
+.register th
+{
+    border-style: none;
+    text-align: right;
+    padding: 8px;
+    vertical-align: middle;
+    /*white-space:nowrap;*/
+}
+
+.register tr:nth-child(even)
+{
+    background-color: transparent;
+}
+
+.register input[type="checkbox"]
+{
+    display: inline;
+    margin-left: 10px;
+}
+
+.nav-with-svg
+{
+    display: flex !important;
+    align-items: center;
+}
+
+.nav-svg-item
+{
+    display:block;
+}
+
+.result_section .container-fluid .row
+{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.result_section,
+.client_section
+{
+    background-color: var(--logo-green);
+    color: var(--primary-gray);
+}
+
+.us_section
+{
+    background-color: var(--primary-gray);
+    color: var(--logo-gray);
+}
+
+
+.result_section .img-box img
+{
+    max-height: 550px;
+    padding-left: 0;
+}
+
+.result_section .detail-box
+{
+    max-width: 600px;
+}
+
+.welcome .welcome-box blockquote
+{
+    margin-bottom: 50px;
+}
+
+.customer-box .detail-box p
+{
+    padding-bottom: 2rem !important;
+}
+
+.results .detail-box p
+{
+    margin-bottom: 1.5rem;
+}
+
+#carouselCustomerSays .carousel-indicators li
+{
+    background-color: var(--yellow);
+}
+
+#carouselCustomerSays .carousel-indicators
+{
+    z-index: 0;
+}
+
+.carousel-item .box .detail-box
+{
+    margin-top: 0.5rem;
+}
+
+.carousel-p
+{
+    margin-bottom: 2.5rem;
+}
+
+/*section:last-child*/
+.client_section
+{
+    padding-bottom: 39px;
+}
+
+.about-box .img-box
+{
+    height: 67px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-box .img-box img
+{
+    max-height: 67px;
+}
+
+.about-box .detail-box p
+{
+    margin-bottom: 2.5rem;
+}
+
+.welcome .welcome-box
+{
+    font-size: large;
+}
+
+.welcome_section .container-fluid .row
+{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.welcome_section
+{
+    background-color: var(--logo-green);
+    color: var(--primary-gray);
+}
+
+.welcome_section .img-box img
+{
+    max-height: 450px;
+    padding-left: 0;
+}
+
+.welcome_section .detail-box
+{
+    max-width: 550px;
+}
+
+.welcome .detail-box p
+{
+    margin-bottom: 1.5rem;
 }

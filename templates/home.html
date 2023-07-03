@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% load static %}
+<!-- fonts style -->
+<link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap"
+rel="stylesheet" />
+<!-- Custom styles for this template -->
+<link href="{% static 'css/style.css' %}" rel="stylesheet" />
+<!-- responsive style -->
+<link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% include 'logged_index.html' %}
+    {% else %}
+        {% include 'home_index.html' %}
+    {% endif %}
+{% endblock %}

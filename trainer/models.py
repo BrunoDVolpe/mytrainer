@@ -108,23 +108,26 @@ class StartPeriod(models.Model):
 
     def get_month(self):
         port_months = {
-            1: 'Janeiro',
-            2: 'Fevereiro',
-            3: 'Março',
-            4: 'Abril',
-            5: 'Maio',
-            6: 'Junho',
-            7: 'Julho',
-            8: 'Agosto',
-            9: 'Setembro',
-            10: 'Outubro',
-            11: 'Novembro',
-            12: 'Dezembro'
+            1: 'January',
+            2: 'February',
+            3: 'March',
+            4: 'April',
+            5: 'May',
+            6: 'June',
+            7: 'July',
+            8: 'August',
+            9: 'September',
+            10: 'October',
+            11: 'November',
+            12: 'December'
         }
         return port_months[self.initial.month]
 
     def __str__(self):
-        return f"{self.initial.month}/{self.initial.year}"
+        """Returns the month/year of the initial date.
+        As initial can start and finish in another month, we add 1 week into the initial
+         to get the right ones"""
+        return f"{(self.initial + datetime.timedelta(days=7)).month}/{(self.initial + datetime.timedelta(days=7)).year}"
 
 class TrainingInstance(models.Model):
     """This class represents a client's view classes and payment status for a monthly control."""
@@ -133,21 +136,11 @@ class TrainingInstance(models.Model):
 
     payment_status = models.BooleanField(default=False)
 
-    WEEK_STATUS = (
-        ('?', 'Feito!'),
-        ('?', 'Não'),
-        ('?', '1/2'),
-        ('?', '1/3'),
-        ('?', '2/3'),
-        ('?', 'Aula dada'),
-        ('?', 'Feriado'),
-    )
-
     CLASS_STATUS = (
-        ('ok', 'Feito!'),
-        ('no', 'Não'),
-        ('gc', 'Aula dada'),
-        ('hd', 'Feriado'),
+        ('ok', 'Done!'),
+        ('no', 'No'),
+        ('gc', 'Given Class'),
+        ('hd', 'Holiday'),
         ('na', '-')
     )
 
@@ -269,10 +262,10 @@ class TrainingInstance(models.Model):
 
     @classmethod
     def create(cls, client_instance, period_instance):
+        """Verify if there is a training instance with same month to user before creating"""
         queryset = TrainingInstance.objects.filter(client=client_instance)
         for instance in queryset:
             if instance.begins_at == period_instance:
-                print('ERRO CREATE (em Model da TrainingInstance: Já existe uma TrainingInstance com essa data (begins_at) para esse usuário')
                 return None
         training_instance = cls(client=client_instance, begins_at=period_instance)
         training_instance.save()
@@ -305,7 +298,7 @@ class TrainingInstance(models.Model):
         count = data['count']
 
         if count:
-            return f"{done} de {count} = {done/count*100:.2f}%"
+            return f"{done} of {count} = {done/count*100:.2f}%"
         else:
             return "-"
 
@@ -331,4 +324,4 @@ class TrainingInstance(models.Model):
         return reverse('client-train', args=[str(self.client.id), str(self.id)])
 
     def __str__(self):
-        return f"Mês: {self.begins_at} | Aluno: {self.client}"
+        return f"Month: {self.begins_at} | Client: {self.client}"

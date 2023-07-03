@@ -1,14 +1,15 @@
 {% extends 'layout.html' %}
 
-{% block title %}Cliente{% endblock %}
+{% block title %}Edit Client{% endblock %}
 
 {% block content %}
+<div class = "pt-3 info-overflow">
     <table>
         <tr>
             <th>{{ queryset.name }}</th>
-            <th>Pacote</th>
-            <th>Vencimento dia</th>
-            <th>Mensalidade</th>
+            <th>Package</th>
+            <th>Due date</th>
+            <th>Monthly payment</th>
         </tr>
         <tr>
             <td>{{ queryset.plan.service }}</td>
@@ -30,4 +31,5 @@
             </tr>
         </table>
     </form>
+</div>
 {% endblock %}

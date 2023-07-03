@@ -1,0 +1,33 @@
+{% load static %}
+
+  <!-- welcome section -->
+  <section class="welcome_section">
+    <div class="container-fluid px-0">
+      <div class="row">
+        <div class=".col-6 .col-lg-4 px-0">
+          <div class="img-box">
+            <img src="{% static 'images/kettlebell-home-squared.jpg' %}" alt="3 kettlebells. Image focused in the one of the middle.">
+          </div>
+        </div>
+        <div class="welcome .col-12 .col-md-8 d-flex flex-fill align-self-center justify-content-center px-3">
+          <div class="welcome-box">
+            <h2>
+                Welcome back{% if request.user.first_name %}, {{ request.user.first_name }}!{% else %}!{% endif %}
+            </h2>
+            <p>Your personal trainer says:</p>
+            <blockquote>Don't forget strecthing!</blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end result section -->
+
+  <script>
+    function openNav() {
+      document.getElementById("myNav").classList.toggle("menu_width");
+      document
+        .querySelector(".custom_menu-btn")
+        .classList.toggle("menu_btn-style");
+    }
+  </script>

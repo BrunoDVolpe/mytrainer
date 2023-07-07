@@ -9,6 +9,7 @@ from trainer.models import ClientProfile, TrainerProfile
 
 # Create your views here.
 def homeView(request):
+    """Renders the homepage"""
     context = {}
     return render(request, 'home.html', context)
 
@@ -49,8 +50,10 @@ def registerView(request):
 
 
 def loginView(request, user=None):
+    """Authenticates a user in the platform"""
     if request.user.is_authenticated:
         return redirect('home')
+    
     form = LoginForm(request.POST or None)
     if form.is_valid():
         email = form.cleaned_data["email"]
@@ -60,10 +63,11 @@ def loginView(request, user=None):
             login(request, user)
             # Redirect to a success page.
             return redirect('home')
+        
         else:
             # Return an 'invalid login' error message.
             messages.error(request, 'Username or password incorrect')
-            form = LoginForm()
+            form = LoginForm()   
     context = {
         'form': form,
     }
@@ -72,12 +76,15 @@ def loginView(request, user=None):
 
 @login_required
 def logoutView(request):
+    """Logs a user out"""
     logout(request)
     return redirect('home')
 
 
 @login_required
 def userProfileView(request):
+    """Shows the user profile information and if the user has a trainer profile
+      also shows the trainer options"""
     try:
         trainer_profile = TrainerProfile.objects.get(user=request.user)
         context = {'trainer_profile': trainer_profile}
@@ -88,6 +95,7 @@ def userProfileView(request):
 
 @login_required
 def userProfileUpdateView(request):
+    """Updates user and trainer (if personal trainer professional) profile data"""
     try:
         trainer_profile = TrainerProfile.objects.get(user=request.user)
         is_trainer = True
@@ -121,7 +129,8 @@ def userProfileUpdateView(request):
 
 
 @login_required
-def change_password(request):
+def changePassword(request):
+    """Changes a user's password"""
     if request.method == 'POST':
         form = MyPasswordChangeForm(request.user, request.POST)
         if form.is_valid():

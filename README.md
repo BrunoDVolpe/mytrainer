@@ -1,5 +1,5 @@
 # myTrainer
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/XA_vQfOTtMw
 ## Description:
 The app myTrainer was designed to help a personal trainer professional to manage its trainee's / clients - not sure how call them in English - helping the personal trainer to set its plan such as personal trainer classes, training advisory, training consultancy or others; and differentiate plans into packages which let's the personal choose how many weekly meetings will happen with the client.
 

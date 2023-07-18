@@ -22,7 +22,74 @@ This necessity came from a real case and app will have a lot of improvements, su
 
 and others, which I intent to keep doing as a personal project.
 
-### Features and Resources
+## Getting Started
+- To use this application within your own network, as a debbug mode, you will:
+  - Create a Python Virtual Environment into a folder which will holds the virtual env and project (This project was built using Python's version 4.2.2)
+    ```Python
+     project_folder_absolute_path $ virtualenv .
+    ```
+  - Activates your virtual env if not yet activated. You can use the commandline
+    ```Powershell
+     virtual_env_path $ source Scripts/activate
+    ```
+  - Install Django (This project was built using django's version 3.11.2)
+    ```Python
+     pip install django
+    ```
+  - Creates a folder into your virtual env. For example, 'src'.
+    ```Powershell
+     project_venv_absolute_path $ mkdir src
+    ```
+  - Clone this project into the 'src' folder.
+  - Into src folder you can run migrations to create the database.
+    ```Powershell
+     project_venv_absolute_path $ cd src
+    ```
+    ```Python
+     python manage.py makemigrations
+    ```
+    ```Python
+     python manage.py migrate
+    ```
+  - Start the Django's default server and access through your browser connecting to the shown IP address.
+    ```Python
+     python manage.py runserver
+    ```
+
+  ### Setting a specific IP address into your private network
+  If you want to access the application from your mobile or another pc and both are connected to the same network you can:
+    - Open CMD or your corresponding Terminal and execute
+    ```powershell
+    $ ipconfig
+    ```
+    - Copy the corresponding IPv4.
+
+    - In the myTrainer project, into settings.py, you will look for allowed_hosts and set this number into the constant list as a string. Example:
+    ```python
+    settings.py:
+    (...)
+    allowed_hosts = ['123.456.789.123']
+    (...)
+    ```
+    - Then, you run the server into this IP and set a port. In our case we will use the port 80.
+    ```python
+    python manage.py runserver 123.456.789.123:80
+    ```
+    - Now, access this ip address into your computer, mobile or other device conected into this network. As the port is the '80', it's not necessary to write it into the web browser as it's a default port (insecure).
+
+
+  <br>It's possible to also use othe mechanisms to set the application on cloud, but I didn't get this far yet. Also, there are cares you must take related to security in your network. It should be in mind that if you run on cloud, don't forget to deactivate the "debug mode", changes the database in case you have many mutual access and also check for security configuration.
+
+
+  Lastely, some resorces must be changed into admin mode as they are not fully implemented into the application (yet).
+
+## Resources
+There are other specific resources used in this app. Basically is divided into two django apps: users and trainer. Users concentrates the most user related content as creating (register) and updating a user and user's profile, reset password, login and logout. This project is using the native django user object, extending it to a relation OneToOne to the user into client's object. This is a fundamental rule to avoid a personal trainer to wait a client to create an account to then the trainer creates all the rest. Trainer content holds all the other function related to personal trainer professional and client.
+
+### Templates and URLs
+The templates are located into specific 'templates' folder and urls.py holds the url's information, linking a web address to a special python function. Both templates folder and urls.py are presented into both apps folder.
+
+### Features and Functions
 Django is a free and open source Python framework for web development. It's design pattern is based on MVT (Model-Template-View) architecture where the Model is responsible for structuring and manipulating the data of the application and it comes with an object-relational mapper in which it's possible to describe the database layout in Python code; The Template is the user interface — what you see in your browser when a webpage is rendered to you. It is represented by HTML, CSS, Javascript and Jinja to manipulate data dynamically into the page itself; Finally, the View is responsible to encapsulate the logic for processing a user’s request and for returning the response receiveid through the URLs and also set the templates and dynamic content to be rendered in the template.
 
 Django also has the concept of apps, where we can split the whole project into smaller focused pieces. The application has basically two apps, one called 'users' for users properties and the other is called 'trainer' for the trainers and app's general features. These are the features to be found in the application.
@@ -147,62 +214,3 @@ The following tools and languages were used in the construction of this project:
 #### **Tools**
 - Editor: Visual Studio Code
 - Version control: Git
-
-## Getting Started
-- To use this application within your own network, as a debbug mode, you will:
-  - Create a Python Virtual Environment into a folder which will holds the virtual env and project (This project was built using Python's version 4.2.2)
-    ```Python
-     project_folder_absolute_path $ virtualenv .
-    ```
-  - Activates your virtual env if not yet activated. You can use the commandline
-    ```Powershell
-     virtual_env_path $ source Scripts/activate
-    ```
-  - Install Django (This project was built using django's version 3.11.2)
-    ```Python
-     pip install django
-    ```
-  - Creates a folder into your virtual env. For example, 'src'.
-    ```Powershell
-     project_venv_absolute_path $ mkdir src
-    ```
-  - Clone this project into the 'src' folder.
-  - Into src page, you can start the server. You'll get an IP address to access the project.
-    ```Powershell
-     project_venv_absolute_path $ cd src
-    ```
-    ```Python
-     python manage.py runserver
-    ```
-  ### Setting a specific IP address into your private network
-  If you want to access the application from your mobile or another pc and both are connected to the same network you can:
-    - Open CMD or your corresponding Terminal and execute
-    ```powershell
-    $ ipconfig
-    ```
-    - Copy the corresponding IPv4.
-
-    - In the myTrainer project, into settings.py, you will look for allowed_hosts and set this number into the constant list as a string. Example:
-    ```python
-    settings.py:
-    (...)
-    allowed_hosts = ['123.456.789.123']
-    (...)
-    ```
-    - Then, you run the server into this IP and set a port. In our case we will use the port 80.
-    ```python
-    python manage.py runserver 123.456.789.123:80
-    ```
-    - Now, access this ip address into your computer, mobile or other device conected into this network. As the port is the '80', it's not necessary to write it into the web browser as it's a default port (insecure).
-
-
-  <br>It's possible to also use othe mechanisms to set the application on cloud, but I didn't get this far yet. Also, there are cares you must take related to security in your network. It should be in mind that if you run on cloud, don't forget to deactivate the "debug mode", changes the database in case you have many mutual access and also check for security configuration.
-
-
-  Lastely, some resorces must be changed into admin mode as they are not fully implemented into the application (yet).
-
-## Resources
-There are other specific resources used in this app. Basically is divided into two django apps: users and trainer. Users concentrates the most user related content as creating (register) and updating a user and user's profile, reset password, login and logout. This project is using the native django user object, extending it to a relation OneToOne to the user into client's object. This is a fundamental rule to avoid a personal trainer to wait a client to create an account to then the trainer creates all the rest. Trainer content holds all the other function related to personal trainer professional and client.
-
-### Templates and URLs
-The templates are located into specific 'templates' folder and urls.py holds the url's information, linking a web address to a special python function. Both templates folder and urls.py are presented into both apps folder.

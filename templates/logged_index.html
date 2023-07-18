@@ -14,6 +14,11 @@
             <h2>
                 Welcome back{% if request.user.first_name %}, {{ request.user.first_name }}!{% else %}!{% endif %}
             </h2>
+            {% for group in user.groups.all %}
+              {% if group.name == 'personal_trainer' %}
+                <p>Advice displayed to your clients:</p>
+              {% endif %}
+            {% endfor %}
             <p>Your personal trainer says:</p>
             <blockquote>Don't forget strecthing!</blockquote>
           </div>

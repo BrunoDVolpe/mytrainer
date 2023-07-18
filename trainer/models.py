@@ -10,10 +10,10 @@ class UsersPlan(models.Model):
     name = models.CharField(max_length=50)
 
     CONTRACTS = [
-        ('M','Mensal'),
-        ('T', 'Trimestral'),
-        ('S', 'Semestral'),
-        ('A', 'Anual')
+        ('M','Monthly'),
+        ('T', 'Quaterly'),
+        ('S', 'Biannually'),
+        ('A', 'Yearly')
     ]
     contract_length = models.CharField(max_length=1, choices=CONTRACTS, default='M')
     package = models.ForeignKey('FrequencyPackage', on_delete=models.CASCADE)
